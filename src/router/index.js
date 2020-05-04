@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import NotFound from "../views/NotFound.vue";
 import SignIn from "../views/SignIn.vue";
 import Service from "../views/Service.vue";
+import SendNotify from "../views/sendNotify.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/service",
     name: "service",
     component: Service,
+  },
+  {
+    path: "/sendNotify",
+    name: "sendNotify",
+    component: SendNotify,
   },
   {
     path: "*",
