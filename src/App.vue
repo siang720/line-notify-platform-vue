@@ -4,14 +4,7 @@
       <div class="container">
         <router-view />
       </div>
-      <sidebar-menu
-        :menu="menu"
-        :collapsed="collapsed"
-        :theme="selectedTheme"
-        :show-one-child="true"
-        @toggle-collapse="onToggleCollapse"
-        @item-click="onItemClick"
-      />
+      <sidebar-menu :menu="menu" @toggle-collapse="onToggleCollapse" />
     </div>
   </div>
 </template>
@@ -27,49 +20,42 @@ export default {
         {
           header: true,
           title: "Main Navigation",
-          hiddenOnCollapse: true,
+          hiddenOnCollapse: true
         },
         {
           href: "/",
           title: "Dashboard",
-          icon: "fa fa-user",
+          icon: "fa fa-user"
         },
         {
           href: "/service",
           title: "Service",
-          icon: "fa fa-chart-area",
-          // child: [
-          //   {
-          //     href: "/charts/sublink",
-          //     title: "Sub Link",
-          //   },
-          // ],
+          icon: "fa fa-chart-area"
         },
         {
           href: "/sendNotify",
           title: "Send Notify",
-          icon: "fa fa-user",
+          icon: "fa fa-user"
         },
         {
           href: "/draft",
           title: "Draft",
-          icon: "fa fa-user",
+          icon: "fa fa-user"
         },
         {
           href: "/historyNotify",
           title: "History Notify",
-          icon: "fa fa-user",
-        },
+          icon: "fa fa-user"
+        }
       ],
-      collapsed: false,
+      collapsed: false
     };
   },
   methods: {
     onToggleCollapse(collapsed) {
-      console.log(collapsed);
       this.collapsed = collapsed;
-    },
-  },
+    }
+  }
 };
 </script>
 
