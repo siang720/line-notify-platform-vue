@@ -38,13 +38,18 @@ export default {
           icon: "fa fa-user"
         },
         {
+          href: "/historyNotify",
+          title: "History Notify",
+          icon: "fa fa-user"
+        },
+        {
           href: "/draft",
           title: "Draft",
           icon: "fa fa-user"
         },
         {
-          href: "/historyNotify",
-          title: "History Notify",
+          href: "/setting",
+          title: "Setting",
           icon: "fa fa-user"
         }
       ],

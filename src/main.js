@@ -5,7 +5,12 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 import VueSidebarMenu from "vue-sidebar-menu";
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
+import { ServerTable, ClientTable, Event } from 'vue-tables-2';
 Vue.use(VueSidebarMenu);
+Vue.use(ClientTable)
+Vue.use(ServerTable)
+window.Event = Event;
+Vue.use(Event);
 
 Vue.config.productionTip = false;
 
