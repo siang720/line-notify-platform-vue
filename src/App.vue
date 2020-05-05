@@ -2,7 +2,21 @@
   <div id="app" :class="[{ collapsed: collapsed }]">
     <div class="demo">
       <div class="container">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-transparent">
+          <div id="navbarSupportedContent" class="navbar-collapse collapse">
+            <div class="ml-auto d-flex align-items-center">
+              <!-- is user is login -->
+              <router-link to="#" class="text-dark mr-3">使用者 您好</router-link>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-success my-2 my-sm-0"
+                @click="showModal"
+              >登入</button>
+            </div>
+          </div>
+        </nav>
         <router-view />
+        <modal v-show="isModalVisible" @close="closeModal" />
       </div>
       <sidebar-menu :menu="menu" @toggle-collapse="onToggleCollapse" />
     </div>
@@ -12,8 +26,12 @@
 <script>
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import modal from "./components/loginModal";
 export default {
   name: "App",
+  components: {
+    modal
+  },
   data() {
     return {
       menu: [
@@ -24,7 +42,7 @@ export default {
         },
         {
           href: "/",
-          title: "Dashboard",
+          title: "Profile",
           icon: "fa fa-user"
         },
         {
@@ -48,12 +66,19 @@ export default {
           icon: "fa fa-user"
         }
       ],
-      collapsed: false
+      collapsed: false,
+      isModalVisible: false
     };
   },
   methods: {
     onToggleCollapse(collapsed) {
       this.collapsed = collapsed;
+    },
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
     }
   }
 };
