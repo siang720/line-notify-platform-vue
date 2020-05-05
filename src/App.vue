@@ -46,11 +46,6 @@ export default {
           href: "/draft",
           title: "Draft",
           icon: "fa fa-user"
-        },
-        {
-          href: "/setting",
-          title: "Setting",
-          icon: "fa fa-user"
         }
       ],
       collapsed: false
