@@ -5,6 +5,7 @@ import SignIn from "../views/SignIn.vue";
 import Service from "../views/Service.vue";
 import SendNotify from "../views/sendNotify.vue";
 import historyNotify from "../views/historyNotify.vue";
+import draft from "../views/draft.vue";
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: "/historyNotify",
     name: "historyNotify",
     component: historyNotify,
+  },
+  {
+    path: "/draft",
+    name: "draft",
+    component: draft
   },
   {
     path: "*",
