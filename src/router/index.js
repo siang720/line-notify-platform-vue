@@ -4,6 +4,7 @@ import NotFound from "../views/NotFound.vue";
 import SignIn from "../views/SignIn.vue";
 import Service from "../views/Service.vue";
 import SendNotify from "../views/sendNotify.vue";
+import historyNotify from "../views/historyNotify.vue";
 
 Vue.use(VueRouter);
 
@@ -29,10 +30,15 @@ const routes = [
     component: SendNotify,
   },
   {
+    path: "/historyNotify",
+    name: "historyNotify",
+    component: historyNotify,
+  },
+  {
     path: "*",
     name: "not-found",
     component: NotFound,
-  },
+  }
 ];
 
 const router = new VueRouter({
