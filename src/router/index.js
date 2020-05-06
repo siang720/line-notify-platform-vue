@@ -6,6 +6,7 @@ import Service from "../views/Service.vue";
 import SendNotify from "../views/sendNotify.vue";
 import historyNotify from "../views/historyNotify.vue";
 import draft from "../views/draft.vue";
+import Profile from "../views/Profile.vue"
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,11 @@ const routes = [
     path: "/signup",
     name: "sign-up",
     component: () => import("../views/SignUp.vue"),
+  },
+  {
+    path: "/",
+    name: "profile",
+    component: Profile
   },
   {
     path: "/service",
