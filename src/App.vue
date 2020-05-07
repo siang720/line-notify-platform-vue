@@ -33,24 +33,24 @@ export default {
           icon: "fa fa-user"
         },
         {
-          href: "/service",
+          href: "/services",
           title: "Service",
-          icon: "fa fa-chart-area"
+          icon: "fas fa-server"
         },
         {
           href: "/sendNotify",
           title: "Send Notify",
-          icon: "fa fa-user"
+          icon: "fas fa-paper-plane"
         },
         {
           href: "/historyNotify",
           title: "History Notify",
-          icon: "fa fa-user"
+          icon: "fas fa-history"
         },
         {
           href: "/draft",
           title: "Draft",
-          icon: "fa fa-user"
+          icon: "far fa-file-alt"
         }
       ],
       collapsed: false
