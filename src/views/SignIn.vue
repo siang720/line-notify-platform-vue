@@ -61,49 +61,45 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
-      // 如果 email 或 password 為空，則使用 Toast 提示
-      // 然後 return 不繼續往後執行
-      if (!this.email || !this.password) {
-        Toast.fire({
-          icon: "warning",
-          title: "請填入 email 和 password"
-        });
-        return;
-      }
-      // start send request, prevent user submit until accepting response
-      this.isProcessing = true;
-
-      authorizationAPI
-        .signIn({
-          email: this.email,
-          password: this.password
-        })
-        .then(response => {
-          // 取得API請求後的資料
-          const { data } = response;
-          // 登入失敗
-          if (data.status !== "success") {
-            throw new Error(data.message);
-          }
-          // save data to local storage
-          localStorage.setItem("token", data.token);
-
-          // redirect to home page
-          this.$router.push("/dashboard");
-        })
-        .catch(error => {
-          // 將密碼欄位清空
-          this.password = "";
-          // 顯示錯誤提示
+    async handleSubmit() {
+      try {
+        // 如果 email 或 password 為空，則使用 Toast 提示
+        // 然後 return 不繼續往後執行
+        if (!this.email || !this.password) {
           Toast.fire({
             icon: "warning",
-            title: "請確認您輸入了正確的帳號密碼"
+            title: "請填入 email 和 password"
           });
-          // 回復submit button至可點擊狀態
-          this.isProcessing = false;
-          console.log("error", error);
+          return;
+        }
+        // start send request, prevent user submit until accepting response
+        this.isProcessing = true;
+        const response = await authorizationAPI.signIn({
+          email: this.email,
+          password: this.password
         });
+        // 取得API請求後的資料
+        const { data } = response;
+        // 登入失敗
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        // save data to local storage
+        localStorage.setItem("token", data.token);
+        // redirect to home page
+        this.$router.push("/dashboard");
+      } catch (error) {
+        // 將密碼欄位清空
+        this.password = "";
+        // 顯示錯誤提示
+        Toast.fire({
+          icon: "warning",
+          title: "請確認您輸入了正確的帳號密碼"
+        });
+        // 回復submit button至可點擊狀態
+        this.isProcessing = false;
+        console.log("error", error);
+      }
     }
   }
 };
