@@ -29,7 +29,7 @@ export default {
         },
         {
           href: "/",
-          title: "Profile",
+          title: "Dashboard",
           icon: "fa fa-user"
         },
         {

@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import authorizationAPI from "./../apis/authorization";
+
 export default {
   name: "SignIn",
   data() {
@@ -54,13 +56,20 @@ export default {
   },
   methods: {
     handleSubmit() {
-      const data = JSON.stringify({
-        email: this.email,
-        password: this.password
-      });
+      authorizationAPI
+        .signIn({
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          // 取得API請求後的資料
+          const { data } = response;
+          // save data to local storage
+          localStorage.setItem("token", data.token);
 
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
+          // redirect to home page
+          this.$router.push("/dashboard");
+        });
     }
   }
 };

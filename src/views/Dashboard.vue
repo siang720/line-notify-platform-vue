@@ -11,7 +11,7 @@ const dummyData = {
   }
 };
 export default {
-  name: "profile",
+  name: "dashboard",
   data() {
     return {
       user: dummyData.user

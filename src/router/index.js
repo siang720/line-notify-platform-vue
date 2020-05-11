@@ -6,7 +6,7 @@ import Service from "../views/Service.vue";
 import SendNotify from "../views/sendNotify.vue";
 import historyNotify from "../views/historyNotify.vue";
 import draft from "../views/draft.vue";
-import Profile from "../views/Profile.vue"
+import Dashboard from "../views/Dashboard.vue"
 
 Vue.use(VueRouter);
 
@@ -23,8 +23,13 @@ const routes = [
   },
   {
     path: "/",
-    name: "profile",
-    component: Profile
+    name: "root",
+    redirect: '/signin'
+  },
+  {
+    path: "/dashboard",
+    name: 'dashboard',
+    component: Dashboard
   },
   {
     path: "/services",
