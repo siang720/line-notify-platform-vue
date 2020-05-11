@@ -16,3 +16,9 @@ export default {
   name: "Navbar"
 };
 </script>
+
+<style>
+.navbar {
+  z-index: 1;
+}
+</style>
