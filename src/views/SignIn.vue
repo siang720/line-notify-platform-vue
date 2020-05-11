@@ -86,6 +86,8 @@ export default {
         }
         // save data to local storage
         localStorage.setItem("token", data.token);
+        // save user data to vuex
+        this.$store.commit("setCurrentUser", data.user);
         // redirect to home page
         this.$router.push("/dashboard");
       } catch (error) {
