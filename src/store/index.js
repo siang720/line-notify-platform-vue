@@ -11,7 +11,8 @@ export default new Vuex.Store({
       name: '',
       email: ''
     },
-    isAuthenticated: false
+    isAuthenticated: false,
+    token: ''
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -22,6 +23,8 @@ export default new Vuex.Store({
       }
       // 將使用者的登入狀態改為 true
       state.isAuthenticated = true
+      // 將使用者驗證用的 token 儲存在 state 中
+      state.token = localStorage.getItem('token')
     },
     revokeAuthentication(state) {
       state.currentUser = {};
@@ -41,8 +44,12 @@ export default new Vuex.Store({
           name,
           email
         })
+        return true
       } catch (error) {
-        console.error(error.message)
+        console.error('can not fetch user information')
+        // 驗證失敗的話一併觸發登出的行為，以清除 state 中的 token
+        commit('revokeAuthentication')
+        return false
       }
     }
   },

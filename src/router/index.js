@@ -9,6 +9,15 @@ import draft from "../views/draft.vue";
 import Dashboard from "../views/Dashboard.vue"
 import store from './../store'
 
+const authorized = (to, from, next) => {
+  const currentUser = store.state.currentUser
+  if (currentUser.id === -1) {
+    next('/signin')
+    return
+  }
+  next()
+}
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -30,27 +39,32 @@ const routes = [
   {
     path: "/dashboard",
     name: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
+    beforeEnter: authorized
   },
   {
     path: "/services",
     name: "service",
     component: Service,
+    beforeEnter: authorized
   },
   {
     path: "/sendNotify",
     name: "sendNotify",
     component: SendNotify,
+    beforeEnter: authorized
   },
   {
     path: "/historyNotify",
     name: "historyNotify",
     component: historyNotify,
+    beforeEnter: authorized
   },
   {
     path: "/draft",
     name: "draft",
-    component: draft
+    component: draft,
+    beforeEnter: authorized
   },
   {
     path: "*",
@@ -63,8 +77,28 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  store.dispatch('fetchCurrentUser')
+router.beforeEach(async (to, from, next) => {
+  const tokenInLocalStorage = localStorage.getItem('token')
+  const tokenInStore = store.state.token
+  let isAuthenticated = store.state.isAuthenticated
+
+  // 比較 localStorage 和 store 中的 token 是否一樣
+  if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore) {
+    isAuthenticated = await store.dispatch('fetchCurrentUser')
+  }
+
+  // 對於不需要驗證 token 的頁面
+  const pathsWithoutAuthentication = ['sign-up', 'sign-in']
+  // 如果 token 無效則轉址到登入頁
+  if (!isAuthenticated && !pathsWithoutAuthentication.includes(to.name)) {
+    next('/signin')
+    return
+  }
+  // 如果 token 有效則轉址到餐聽首頁
+  if (isAuthenticated && pathsWithoutAuthentication.includes(to.name)) {
+    next('/dashboard')
+    return
+  }
   next()
 })
 
