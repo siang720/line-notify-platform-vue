@@ -7,6 +7,7 @@ import SendNotify from "../views/sendNotify.vue";
 import historyNotify from "../views/historyNotify.vue";
 import draft from "../views/draft.vue";
 import Dashboard from "../views/Dashboard.vue"
+import store from './../store'
 
 Vue.use(VueRouter);
 
@@ -61,5 +62,10 @@ const routes = [
 const router = new VueRouter({
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchCurrentUser')
+  next()
+})
 
 export default router;
