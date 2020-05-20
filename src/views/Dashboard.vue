@@ -1,21 +1,15 @@
 <template>
   <div class="container">
-    <p>Hello, {{user.name}}</p>
+    <h1>Hello, {{currentUser.name}}</h1>
   </div>
 </template>
 
 <script>
-const dummyData = {
-  user: {
-    name: "Username"
-  }
-};
+import { mapState } from "vuex";
+
 export default {
-  name: "dashboard",
-  data() {
-    return {
-      user: dummyData.user
-    };
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"])
   }
 };
 </script>
