@@ -13,7 +13,7 @@
       <tbody>
         <tr v-for="notify in historyNotifies" :key="notify.id">
           <th scope="row">{{ notify.id }}</th>
-          <td>{{notify.serviceName}}</td>
+          <td>{{notify.Service.name}}</td>
           <td>{{notify.message}}</td>
           <td>{{notify.sendNum}}</td>
           <td>{{notify.sendTime | moment}}</td>
@@ -25,32 +25,8 @@
 
 <script>
 import moment from "moment";
-
-const dummyData = {
-  historyNotifies: [
-    {
-      id: 1,
-      serviceName: "test1",
-      message: "hello world1",
-      sendNum: 100,
-      sendTime: new Date()
-    },
-    {
-      id: 2,
-      serviceName: "test2",
-      message: "hello world2",
-      sendNum: 100,
-      sendTime: new Date()
-    },
-    {
-      id: 3,
-      serviceName: "test3",
-      message: "hello world3",
-      sendNum: 100,
-      sendTime: new Date()
-    }
-  ]
-};
+import notifyAPI from "../apis/notify";
+import { Toast } from "../utils/helpers";
 
 export default {
   filters: {
@@ -67,8 +43,16 @@ export default {
     this.fetchhistoryNotifies();
   },
   methods: {
-    fetchhistoryNotifies() {
-      this.historyNotifies = dummyData.historyNotifies;
+    async fetchhistoryNotifies() {
+      try {
+        const response = await notifyAPI.getHistory();
+        this.historyNotifies = response.data.messages;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法取得歷史訊息資料，請稍後再試"
+        });
+      }
     }
   }
 };
