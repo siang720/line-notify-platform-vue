@@ -1,10 +1,8 @@
 <template>
   <div id="app" :class="[{ collapsed: collapsed }]">
     <div class="demo">
-      <div class="container">
-        <Navbar />
-        <router-view />
-      </div>
+      <Navbar />
+      <router-view />
       <sidebar-menu :menu="menu" @toggle-collapse="onToggleCollapse" />
     </div>
   </div>
