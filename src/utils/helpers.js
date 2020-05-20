@@ -13,3 +13,5 @@ export const Toast = Swal.mixin({
   showConfirmButton: false,
   timer: 3000
 })
+
+export const swal = Swal;

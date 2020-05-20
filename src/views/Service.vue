@@ -5,18 +5,22 @@
     <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">id</th>
-          <th scope="col">service_name</th>
-          <th scope="col">client_id</th>
-          <th scope="col">client_secret</th>
-          <th scope="col">token_num</th>
-          <th scope="col" width="300">action</th>
+          <th scope="col" class="col-id">id</th>
+          <th scope="col" class="col-name">Service Name</th>
+          <th scope="col" class="col-client-id">Client Id</th>
+          <th scope="col" class="col-client-secret">Client Secret</th>
+          <th scope="col" class="col-tokens">Tokens</th>
+          <th scope="col" width="300" class="col-action text-center">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="service in services" :key="service.id">
-          <th scope="row">{{ service.id }}</th>
-          <td>
+        <tr
+          v-for="service in services"
+          :key="service.id"
+          :class="{ editingLine : service.isEditing }"
+        >
+          <th scope="row" class="align-middle">{{ service.id }}</th>
+          <td class="align-middle">
             <div v-show="!service.isEditing" class="service-name">{{service.name}}</div>
             <input
               v-show="service.isEditing"
@@ -24,45 +28,53 @@
               type="text"
               class="form-control"
             />
-            <span v-show="service.isEditing" class="cancel" @click="handleCancel(service.id)">✕</span>
           </td>
-          <td>
-            <div v-show="!service.isEditing" class="client-id">{{service.client_id}}</div>
+          <td class="align-middle">
+            <div v-show="!service.isEditing" class="client-id">{{service.clientId}}</div>
             <input
               v-show="service.isEditing"
-              v-model="service.client_id"
+              v-model="service.clientId"
               type="text"
               class="form-control"
             />
           </td>
-          <td>
-            <div v-show="!service.isEditing" class="client-secret">{{ service.client_secret }}</div>
+          <td class="align-middle">
+            <div v-show="!service.isEditing" class="client-secret">{{ service.clientSecret }}</div>
             <input
               v-show="service.isEditing"
-              v-model="service.client_secret"
+              v-model="service.clientSecret"
               type="text"
               class="form-control"
             />
           </td>
-          <td>{{ service.token_num }}</td>
-          <td class="d-flex justify-content-between">
-            <a href="#" class="btn btn-link">Send</a>
+          <td class="align-middle">{{ service.Tokens.length }}</td>
+          <td class="d-flex justify-content-center">
+            <a v-show="!service.isEditing" href="#" class="btn btn-outline-info mr-1">Send</a>
             <button
               v-show="!service.isEditing"
               type="button"
-              class="btn btn-link mr-2"
+              class="btn btn-outline-dark mr-1"
               @click.stop.prevent="toggleIsEditing(service.id)"
             >Edit</button>
             <button
               v-show="service.isEditing"
               type="button"
-              class="btn btn-link mr-2"
-              @click.stop.prevent="updateService({ serviceId: service.id, name: service.name, client_id: service.client_id, client_secret: service.client_secret })"
+              class="btn btn-outline-success mr-1"
+              :disabled="isProcessing"
+              @click.stop.prevent="updateService({ serviceId: service.id, name: service.name, clientId: service.clientId, clientSecret: service.clientSecret })"
             >Save</button>
             <button
+              v-show="service.isEditing"
+              type="button"
+              class="cnacel btn btn-outline-secondary mr-1"
+              :disabled="isProcessing"
+              @click="handleCancel(service.id)"
+            >Cancel</button>
+            <button
+              v-show="!service.isEditing"
               @click.stop.prevent="deleteService(service.id)"
               type="button"
-              class="btn btn-link"
+              class="btn btn-outline-danger"
             >Delete</button>
           </td>
         </tr>
@@ -72,54 +84,70 @@
 </template>
 
 <script>
-const dummyData = {
-  services: [
-    {
-      id: 1,
-      name: "test1",
-      client_id: "fafa4af56d74faf4df65af",
-      client_secret: "DDFLA3L41280VA09R8E",
-      token_num: 15
-    },
-    {
-      id: 2,
-      name: "test2",
-      client_id: "fafa4af56d74faf4df65af",
-      client_secret: "DDFLA3L41280VA09R8E",
-      token_num: 15
-    },
-    {
-      id: 3,
-      name: "test3",
-      client_id: "fafa4af56d74faf4df65af",
-      client_secret: "DDFLA3L41280VA09R8E",
-      token_num: 15
-    }
-  ]
-};
+import servicesAPI from "../apis/services";
+import { Toast, swal } from "./../utils/helpers";
 
 export default {
   data() {
     return {
-      services: []
+      services: [],
+      isProcessing: false
     };
   },
   created() {
     this.fetchServices();
   },
   methods: {
-    fetchServices() {
-      // this.services = dummyData.services;
-      this.services = dummyData.services.map(service => ({
-        ...service,
-        isEditing: false,
-        nameCached: "",
-        client_idCached: "",
-        client_secretCached: ""
-      }));
+    async fetchServices() {
+      try {
+        const response = await servicesAPI.getServices();
+        this.services = response.data.services.map(service => ({
+          ...service,
+          isEditing: false,
+          nameCached: "",
+          clientIdCached: "",
+          clientSecretCached: ""
+        }));
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法取得頻道資料，請稍後再試"
+        });
+      }
     },
     deleteService(serviceId) {
-      this.services = this.services.filter(service => service.id !== serviceId);
+      swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          position: "center",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        })
+        .then(async result => {
+          if (result.value) {
+            try {
+              this.isProcessing = true;
+              // CALL API
+              const { data } = await servicesAPI.deleteService(serviceId);
+              if (data.status !== "success") {
+                throw new Error(data.message);
+              }
+              // 前端刪除資料
+              this.services = this.services.filter(
+                service => service.id !== serviceId
+              );
+              swal.fire("Deleted!", "The service has been deleted.", "success");
+              this.isProcessing = false;
+            } catch (error) {
+              this.isProcessing = false;
+              swal.fire("Error!", "Fail to delete the service.", "error");
+            }
+          }
+        });
     },
     toggleIsEditing(serviceId) {
       this.services = this.services.map(service => {
@@ -128,18 +156,33 @@ export default {
             ...service,
             isEditing: !service.isEditing,
             nameCached: service.name,
-            client_idCached: service.client_id,
-            client_secretCached: service.client_secret
+            clientIdCached: service.clientId,
+            clientSecretCached: service.clientSecret
           };
         }
 
         return service;
       });
     },
-    updateService({ serviceId, name, client_id, client_secret }) {
-      // TODO: 透過 API 去向伺服器更新service data
-      console.log([name, client_id, client_secret]);
-      this.toggleIsEditing(serviceId);
+    async updateService({ serviceId, name, clientId, clientSecret }) {
+      try {
+        this.isProcessing = true;
+        const { data } = await servicesAPI.updateService({
+          serviceId,
+          formData: { name, clientId, clientSecret }
+        });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.toggleIsEditing(serviceId);
+        this.isProcessing = false;
+      } catch (error) {
+        this.isProcessing = false;
+        Toast.fire({
+          icon: "error",
+          title: "無法更新資料，請稍後再試"
+        });
+      }
     },
     handleCancel(serviceId) {
       this.services = this.services.map(service => {
@@ -149,8 +192,8 @@ export default {
 
             // 把原本的資料還回去
             name: service.nameCached,
-            client_id: service.client_idCached,
-            client_secret: service.client_secretCached
+            clientId: service.clientIdCached,
+            clientSecret: service.clientSecretCached
           };
         }
 
@@ -164,31 +207,26 @@ export default {
 </script>
 
 <style scoped>
-.service-name {
-  padding: 0.375rem 0.75rem;
-  border: 1px solid transparent;
-  outline: 0;
-  cursor: auto;
+.col-id {
+  width: 5%;
+}
+.col-name {
+  width: 17%;
+}
+.col-client-id {
+  width: 18%;
+}
+.col-client-secret {
+  width: 35%;
+}
+.col-tokens {
+  width: 5%;
+}
+.col-action {
+  width: 20%;
 }
 
-.btn-link {
-  width: 62px;
-}
-
-.cancel {
-  position: relative;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-130%) translateX(360%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 25px;
-  height: 25px;
-  border: 1px solid #aaaaaa;
-  border-radius: 50%;
-  user-select: none;
-  cursor: pointer;
-  font-size: 12px;
+.editingLine {
+  background-color: #ebe9e9;
 }
 </style>
