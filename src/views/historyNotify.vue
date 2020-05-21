@@ -16,7 +16,7 @@
           <td>{{notify.Service.name}}</td>
           <td>{{notify.message}}</td>
           <td>{{notify.sendNum}}</td>
-          <td>{{notify.sendTime | moment}}</td>
+          <td>{{notify.sendTime | formatToYYYYMMDD_HHMMSS}}</td>
         </tr>
       </tbody>
     </table>
@@ -24,16 +24,12 @@
 </template>
 
 <script>
-import moment from "moment";
 import notifyAPI from "../apis/notify";
 import { Toast } from "../utils/helpers";
+import { fromNowFilter } from "./../utils/mixins";
 
 export default {
-  filters: {
-    moment: function(date) {
-      return moment(date).format();
-    }
-  },
+  mixins: [fromNowFilter],
   data() {
     return {
       historyNotifies: []
