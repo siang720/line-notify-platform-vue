@@ -44,12 +44,12 @@ export default {
           href: "/historyNotify",
           title: "History Notify",
           icon: "fas fa-history"
-        },
-        {
-          href: "/draft",
-          title: "Draft",
-          icon: "far fa-file-alt"
         }
+        // {
+        //   href: "/draft",
+        //   title: "Draft",
+        //   icon: "far fa-file-alt"
+        // }
       ],
       collapsed: false
     };
