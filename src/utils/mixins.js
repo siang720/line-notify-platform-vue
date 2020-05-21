@@ -6,7 +6,7 @@ export const fromNowFilter = {
       return datetime ? moment(datetime).fromNow() : '-'
     },
     formatToYYYYMMDD_HHMMSS(datetime) {
-      return datetime ? moment(datetime).format('YYYY-MM-DD, hh:mm:ss') : '-'
+      return datetime ? moment(datetime).format('YYYY-MM-DD, HH:mm:ss') : '-'
     }
   }
 }

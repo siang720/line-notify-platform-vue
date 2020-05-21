@@ -3,7 +3,7 @@
     <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">id</th>
+          <th scope="col">#</th>
           <th scope="col">service_name</th>
           <th scope="col">message</th>
           <th scope="col">send_num</th>
@@ -11,8 +11,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="notify in historyNotifies" :key="notify.id">
-          <th scope="row">{{ notify.id }}</th>
+        <tr v-for="(notify,index) in historyNotifies" :key="notify.id">
+          <th scope="row">{{ index }}</th>
           <td>{{notify.Service.name}}</td>
           <td>{{notify.message}}</td>
           <td>{{notify.sendNum}}</td>
