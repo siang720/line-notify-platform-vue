@@ -1,11 +1,16 @@
 <template>
   <div>
-    <a href="#" class="btn btn-dark mb-4">Add New Service</a>
+    <button
+      type="button"
+      class="btn btn btn-dark mb-4"
+      :disabled="isCreating"
+      @click.stop.prevent="toggleIsCreating()"
+    >Add New Service</button>
     <!-- Service列表 AdminServiceTable -->
     <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th scope="col" class="col-id">id</th>
+          <th scope="col" class="col-id">#</th>
           <th scope="col" class="col-name">Service Name</th>
           <th scope="col" class="col-client-id">Client Id</th>
           <th scope="col" class="col-client-secret">Client Secret</th>
@@ -14,12 +19,52 @@
         </tr>
       </thead>
       <tbody>
+        <tr v-show="isCreating">
+          <th scope="row" class="align-middle"></th>
+          <td class="align-middle">
+            <input
+              v-model="newService.name"
+              type="text"
+              class="form-control"
+              placeholder="enter service name"
+            />
+          </td>
+          <td class="align-middle">
+            <input
+              v-model="newService.clientId"
+              type="text"
+              class="form-control"
+              placeholder="enter client id"
+            />
+          </td>
+          <td class="align-middle">
+            <input
+              v-model="newService.clientSecret"
+              type="text"
+              class="form-control"
+              placeholder="enter client secret"
+            />
+          </td>
+          <td class="align-middle">--</td>
+          <td class="d-flex justify-content-center">
+            <button
+              type="button"
+              class="btn btn-outline-success mr-1"
+              @click.stop.prevent="createService({ name: newService.name, clientId: newService.clientId, clientSecret: newService.clientSecret })"
+            >Save</button>
+            <button
+              type="button"
+              class="cnacel btn btn-outline-secondary mr-1"
+              @click="CancelCreate()"
+            >Cancel</button>
+          </td>
+        </tr>
         <tr
-          v-for="service in services"
+          v-for="(service, index) in services"
           :key="service.id"
           :class="{ editingLine : service.isEditing }"
         >
-          <th scope="row" class="align-middle">{{ service.id }}</th>
+          <th scope="row" class="align-middle">{{ index + 1}}</th>
           <td class="align-middle">
             <div v-show="!service.isEditing" class="service-name">{{service.name}}</div>
             <input
@@ -49,7 +94,6 @@
           </td>
           <td class="align-middle">{{ service.Tokens.length }}</td>
           <td class="d-flex justify-content-center">
-            <a v-show="!service.isEditing" href="#" class="btn btn-outline-info mr-1">Send</a>
             <button
               v-show="!service.isEditing"
               type="button"
@@ -91,7 +135,13 @@ export default {
   data() {
     return {
       services: [],
-      isProcessing: false
+      isProcessing: false,
+      newService: {
+        name: "",
+        clientId: "",
+        cliendSecret: ""
+      },
+      isCreating: false
     };
   },
   created() {
@@ -201,6 +251,43 @@ export default {
       });
 
       this.toggleIsEditing(serviceId);
+    },
+    toggleIsCreating() {
+      this.isCreating = !this.isCreating;
+    },
+    async createService({ name, clientId, clientSecret }) {
+      let formData = new FormData();
+      formData.append("name", name);
+      formData.append("clientId", clientId);
+      formData.append("clientSecret", clientSecret);
+      try {
+        this.isProcessing = true;
+        const { data } = await servicesAPI.postService({ formData });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.services.unshift({
+          id: data.serviceId,
+          name: name,
+          clientId: clientId,
+          clientSecret: clientSecret,
+          Tokens: []
+        });
+        this.toggleIsCreating();
+        this.isProcessing = false;
+      } catch (error) {
+        this.isProcessing = false;
+        Toast.fire({
+          icon: "error",
+          title: "無法新增service，請稍後再試"
+        });
+      }
+    },
+    CancelCreate() {
+      this.isCreating = false;
+      this.newService.name = "";
+      this.newService.clientId = "";
+      this.newService.clientSecret = "";
     }
   }
 };
