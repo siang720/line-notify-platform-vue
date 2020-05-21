@@ -6,5 +6,10 @@ export default {
     return apiHelper.get('/historicalMessage', {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
+  },
+  postHistory({ formData }) {
+    return apiHelper.post('/historicalMessage', formData, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
   }
 }
