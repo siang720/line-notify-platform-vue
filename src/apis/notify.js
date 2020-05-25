@@ -8,5 +8,8 @@ export default {
   },
   postHistory({ formData }) {
     return apiHelper.post('/historicalMessage', formData, config)
+  },
+  getStatistic() {
+    return apiHelper.get('/getStatistic', config)
   }
 }
