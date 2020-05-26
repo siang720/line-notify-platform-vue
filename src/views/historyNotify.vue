@@ -11,8 +11,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(notify,index) in historyNotifies" :key="notify.id">
-          <th scope="row">{{ index }}</th>
+        <tr v-for="(notify,index) in historyNotifies" :key="index">
+          <th scope="row">{{ index + 1 }}</th>
           <td>{{notify.Service.name}}</td>
           <td>{{notify.message}}</td>
           <td>{{notify.sendNum}}</td>
