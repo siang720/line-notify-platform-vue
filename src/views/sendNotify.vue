@@ -24,7 +24,7 @@
         placeholder="Enter notify message"
       ></textarea>
     </div>
-    <button type="submit" class="btn btn-primary" :disabled="isProcessing">Submit</button>
+    <button type="submit" class="btn btn-outline-primary" :disabled="isProcessing">Submit</button>
   </form>
 </template>
 
