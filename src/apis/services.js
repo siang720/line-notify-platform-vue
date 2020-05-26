@@ -14,5 +14,8 @@ export default {
   },
   postService({ formData }) {
     return apiHelper.post('/services', formData, config)
+  },
+  getServicesSnapshot() {
+    return apiHelper.get('/ServicesSnapshot', config)
   }
 }
