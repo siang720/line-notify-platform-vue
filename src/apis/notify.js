@@ -1,15 +1,13 @@
 import { apiHelper } from '../utils/helpers'
-const getToken = () => localStorage.getItem('token')
-const config = { headers: { Authorization: `Bearer ${getToken()}` } }
 
 export default {
   getHistory() {
-    return apiHelper.get('/historicalMessage', config)
+    return apiHelper.get('/historicalMessage')
   },
   postHistory({ formData }) {
-    return apiHelper.post('/historicalMessage', formData, config)
+    return apiHelper.post('/historicalMessage', formData)
   },
   getStatistic() {
-    return apiHelper.get('/getStatistic', config)
+    return apiHelper.get('/Statistic')
   }
 }

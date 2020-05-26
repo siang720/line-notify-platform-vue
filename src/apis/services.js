@@ -1,21 +1,19 @@
 import { apiHelper } from './../utils/helpers'
-const getToken = () => localStorage.getItem('token')
-const config = { headers: { Authorization: `Bearer ${getToken()}` } }
 
 export default {
   getServices() {
-    return apiHelper.get('/services', config)
+    return apiHelper.get('/services')
   },
   updateService({ serviceId, formData }) {
-    return apiHelper.put(`/services/${serviceId}`, formData, config)
+    return apiHelper.put(`/services/${serviceId}`, formData)
   },
   deleteService(serviceId) {
-    return apiHelper.delete(`services/${serviceId}`, config)
+    return apiHelper.delete(`services/${serviceId}`)
   },
   postService({ formData }) {
-    return apiHelper.post('/services', formData, config)
+    return apiHelper.post('/services', formData)
   },
   getServicesSnapshot() {
-    return apiHelper.get('/ServicesSnapshot', config)
+    return apiHelper.get('/ServicesSnapshot')
   }
 }
