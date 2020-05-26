@@ -23,6 +23,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import servicesAPI from "../apis/services";
 import { Toast } from "../utils/helpers";
@@ -41,7 +42,6 @@ export default {
       try {
         const response = await servicesAPI.getServicesSnapshot();
         this.services = response.data;
-        console.log(this.services);
       } catch {
         Toast.fire({
           icon: "error",
