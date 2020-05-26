@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div id="background">
     <h3>Services</h3>
-    <hr class="mb-4" />
+    <hr class="mb-4 hr-1" />
     <ServiceCard />
     <h3 class="mt-3">Activities</h3>
-    <hr class="mb-4" />
+    <hr class="mb-4 hr-2" />
     <ActivityChart />
     <h3 class="mt-3">Recent Notifies</h3>
     <RecentActivities />
@@ -28,3 +28,6 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+</style>

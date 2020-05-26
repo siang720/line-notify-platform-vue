@@ -4,7 +4,7 @@
       <div class="card mb-3">
         <div class="row no-gutters">
           <div class="col-md-4">
-            <img src="https://i.imgur.com/wKfvBic.jpg" class="card-img" alt="Robot" />
+            <img src="https://i.imgur.com/lCwYqdM.jpg" class="card-img" alt="Robot" />
           </div>
           <div class="col-md-8">
             <div class="card-body">
