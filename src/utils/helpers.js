@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-const baseURL = 'https://line-notify-platform.herokuapp.com/api'
+const baseURL = process.env.NODE_ENV === 'development' ? process.env.VUE_APP_localBaseURL : process.env.VUE_APP_prodBaseURL
 
 const axiosInstance = axios.create({
   baseURL
