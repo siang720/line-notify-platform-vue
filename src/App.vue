@@ -3,7 +3,7 @@
     <div class="demo">
       <Navbar />
       <router-view />
-      <sidebar-menu :menu="menu" @toggle-collapse="onToggleCollapse" />
+      <sidebar-menu :menu="menu" @toggle-collapse="onToggleCollapse" ref="sideBarMenu" />
     </div>
   </div>
 </template>
@@ -12,6 +12,7 @@
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "./components/Navbar";
+
 export default {
   name: "App",
   components: {
@@ -54,9 +55,23 @@ export default {
       collapsed: false
     };
   },
+  created() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
   methods: {
     onToggleCollapse(collapsed) {
       this.collapsed = collapsed;
+    },
+    handleResize() {
+      if (window.innerWidth < 960) {
+        this.collapsed = true;
+        this.$refs.sideBarMenu.isCollapsed = true;
+      }
+      if (window.innerWidth >= 960) {
+        this.collapsed = false;
+        this.$refs.sideBarMenu.isCollapsed = false;
+      }
     }
   }
 };

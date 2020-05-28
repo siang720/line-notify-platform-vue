@@ -1,6 +1,10 @@
 <template>
   <div class="row">
-    <div class="col-4" v-for="service in services" :key="service.index">
+    <div
+      class="col-sm-12 col-md-6 col-12 service-card"
+      v-for="service in services"
+      :key="service.index"
+    >
       <div class="card mb-3">
         <div class="row no-gutters">
           <div class="col-md-4">
@@ -52,4 +56,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.service-card {
+  min-width: 200px;
+}
+</style>
 
