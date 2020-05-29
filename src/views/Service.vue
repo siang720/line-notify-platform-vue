@@ -1,5 +1,7 @@
 <template>
   <div>
+    <modals-container />
+    <!-- Add new service button -->
     <button
       type="button"
       class="btn btn btn-dark mb-4"
@@ -19,6 +21,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- creating mode -->
         <tr v-show="isCreating">
           <th scope="row" class="align-middle"></th>
           <td class="align-middle">
@@ -59,6 +62,7 @@
             >Cancel</button>
           </td>
         </tr>
+        <!-- normal mode -->
         <tr
           v-for="(service, index) in services"
           :key="service.id"
@@ -118,8 +122,14 @@
               v-show="!service.isEditing"
               @click.stop.prevent="deleteService(service.id)"
               type="button"
-              class="btn btn-outline-danger"
+              class="btn btn-outline-danger mr-1"
             >Delete</button>
+            <button
+              v-show="!service.isEditing"
+              @click.stop.prevent="show(service.subscriptURL, service.callbackURL)"
+              type="button"
+              class="btn btn-outline-primary"
+            >Show URL</button>
           </td>
         </tr>
       </tbody>
@@ -130,6 +140,7 @@
 <script>
 import servicesAPI from "../apis/services";
 import { Toast, swal } from "./../utils/helpers";
+import ServiceModal from "../components/ServiceModal";
 
 export default {
   data() {
@@ -288,6 +299,16 @@ export default {
       this.newService.name = "";
       this.newService.clientId = "";
       this.newService.clientSecret = "";
+    },
+    show(subscriptURL, callbackURL) {
+      this.$modal.show(ServiceModal, {
+        subscriptURL: subscriptURL,
+        callbackURL: callbackURL,
+        height: "300"
+      });
+    },
+    hide() {
+      this.$modal.hide("hello-world");
     }
   }
 };
