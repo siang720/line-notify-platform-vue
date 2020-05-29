@@ -9,22 +9,22 @@
       @click.stop.prevent="toggleIsCreating()"
     >Add New Service</button>
     <!-- Service列表 AdminServiceTable -->
-    <table class="table">
+    <table class="table table-rwd">
       <thead class="thead-dark">
-        <tr>
+        <tr class="tr-only-hide">
           <th scope="col" class="col-id">#</th>
           <th scope="col" class="col-name">Service Name</th>
           <th scope="col" class="col-client-id">Client Id</th>
           <th scope="col" class="col-client-secret">Client Secret</th>
           <th scope="col" class="col-tokens">Tokens</th>
-          <th scope="col" width="300" class="col-action text-center">Action</th>
+          <th scope="col" width="300" class="col-action">Action</th>
         </tr>
       </thead>
       <tbody>
         <!-- creating mode -->
         <tr v-show="isCreating">
-          <th scope="row" class="align-middle"></th>
-          <td class="align-middle">
+          <td data-th="#" scope="row" class="align-middle"></td>
+          <td data-th="Service Name" class="align-middle">
             <input
               v-model="newService.name"
               type="text"
@@ -32,7 +32,7 @@
               placeholder="enter service name"
             />
           </td>
-          <td class="align-middle">
+          <td data-th="Client Id" class="align-middle">
             <input
               v-model="newService.clientId"
               type="text"
@@ -40,7 +40,7 @@
               placeholder="enter client id"
             />
           </td>
-          <td class="align-middle">
+          <td data-th="Client Secret" class="align-middle">
             <input
               v-model="newService.clientSecret"
               type="text"
@@ -48,7 +48,7 @@
               placeholder="enter client secret"
             />
           </td>
-          <td class="align-middle">--</td>
+          <td data-th="Tokens" class="align-middle">--</td>
           <td class="d-flex justify-content-center">
             <button
               type="button"
@@ -68,8 +68,8 @@
           :key="service.id"
           :class="{ editingLine : service.isEditing }"
         >
-          <th scope="row" class="align-middle">{{ index + 1}}</th>
-          <td class="align-middle">
+          <td data-th="#" scope="row" class="align-middle">{{ index + 1}}</td>
+          <td data-th="Service Name" class="align-middle">
             <div v-show="!service.isEditing" class="service-name">{{service.name}}</div>
             <input
               v-show="service.isEditing"
@@ -78,7 +78,7 @@
               class="form-control"
             />
           </td>
-          <td class="align-middle">
+          <td data-th="Client Id" class="align-middle">
             <div v-show="!service.isEditing" class="client-id">{{service.clientId}}</div>
             <input
               v-show="service.isEditing"
@@ -87,7 +87,7 @@
               class="form-control"
             />
           </td>
-          <td class="align-middle">
+          <td data-th="Client Secret" class="align-middle">
             <div v-show="!service.isEditing" class="client-secret">{{ service.clientSecret }}</div>
             <input
               v-show="service.isEditing"
@@ -96,7 +96,7 @@
               class="form-control"
             />
           </td>
-          <td class="align-middle">{{ service.Tokens.length }}</td>
+          <td data-th="Tokens" class="align-middle">{{ service.Tokens.length }}</td>
           <td class="d-flex justify-content-center">
             <button
               v-show="!service.isEditing"
@@ -336,5 +336,42 @@ export default {
 
 .editingLine {
   background-color: #ebe9e9;
+}
+
+@media (max-width: 736px) {
+  .table-rwd {
+    min-width: 100%;
+  }
+  /*針對tr去做隱藏*/
+  tr.tr-only-hide {
+    display: none !important;
+  }
+  /*讓tr變成區塊主要讓他有個區塊*/
+  .table-rwd tr {
+    display: block;
+    border: 1px solid #ddd;
+    margin-top: 5px;
+  }
+  .table-rwd td {
+    text-align: left;
+    font-size: 15px;
+    overflow: hidden;
+    width: 100%;
+    display: block;
+  }
+  .table-rwd td:before {
+    content: attr(data-th) "";
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-right: 10px;
+    color: #d20b2a;
+  }
+  /*當RWD縮小的時候.table-bordered 會有兩條線，所以針對.table-bordered去做修正*/
+  .table-rwd.table-bordered td,
+  .table-rwd.table-bordered th,
+  .table-rwd.table-bordered {
+    border: 0;
+  }
 }
 </style>

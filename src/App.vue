@@ -57,18 +57,17 @@ export default {
   },
   created() {
     window.addEventListener("resize", this.handleResize);
-    this.handleResize();
   },
   methods: {
     onToggleCollapse(collapsed) {
       this.collapsed = collapsed;
     },
     handleResize() {
-      if (window.innerWidth < 960) {
+      if (window.innerWidth < 1450) {
         this.collapsed = true;
         this.$refs.sideBarMenu.isCollapsed = true;
       }
-      if (window.innerWidth >= 960) {
+      if (window.innerWidth >= 1450) {
         this.collapsed = false;
         this.$refs.sideBarMenu.isCollapsed = false;
       }
