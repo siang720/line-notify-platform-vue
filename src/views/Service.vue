@@ -218,10 +218,10 @@ export default {
             isEditing: !service.isEditing,
             nameCached: service.name,
             clientIdCached: service.clientId,
-            clientSecretCached: service.clientSecret
+            clientSecretCached: service.clientSecret,
+            subscriptURLCached: service.subscriptURL
           };
         }
-
         return service;
       });
     },
@@ -235,7 +235,16 @@ export default {
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-        this.toggleIsEditing(serviceId);
+        this.services = this.services.map(service => {
+          if (service.id === serviceId) {
+            return {
+              ...service,
+              isEditing: !service.isEditing,
+              subscriptURL: data.subscriptURL
+            };
+          }
+          return service;
+        });
         this.isProcessing = false;
       } catch (error) {
         this.isProcessing = false;
@@ -254,7 +263,8 @@ export default {
             // 把原本的資料還回去
             name: service.nameCached,
             clientId: service.clientIdCached,
-            clientSecret: service.clientSecretCached
+            clientSecret: service.clientSecretCached,
+            subscriptURL: service.subscriptURLCached
           };
         }
 
@@ -282,6 +292,8 @@ export default {
           name: name,
           clientId: clientId,
           clientSecret: clientSecret,
+          subscriptURL: data.subscriptURL,
+          callbackURL: data.callbackURL,
           Tokens: []
         });
         this.toggleIsCreating();
